@@ -4,12 +4,8 @@ import { forwardRef, useEffect, useImperativeHandle, useMemo, useState, } from '
 import CustomBox from "./CustomBox";
 import { OrbitControls } from "@react-three/drei";
 import BaseballFieldFloorScale from "./BaseballFieldFloorScale";
-import GirlBody from "./GirlBody";
-import GirlRightLeg from "./GirlRightLeg";
-import GirlLeftLeg from "./GirlLeftLeg";
+import GLBPartReflective from "./GLBPartReflective";
 import GLBPart from "./GLBPart";
-import GirlLeftArm from "./GirlLeftArm";
-import GirlRightArm from "./GirlRightArm";
 import { LeftSideButtons } from "./LeftSideButtons";
 import { SliderInputGroup } from "./SliderInputGroup";
 
@@ -51,7 +47,7 @@ const Component = forwardRef(({ }: any, ref) => {
   const wallWidth = 0.1
   const wideFeet = 5
   const lengthFeet = 16
-  const heightFeet = 24
+  const heightFeet = 14
   const [sizeForm, s__sizeForm] = useState({
     x: wideFeet, z: lengthFeet, y: heightFeet,
     fov: 50,
@@ -82,8 +78,8 @@ const Component = forwardRef(({ }: any, ref) => {
         <ambientLight intensity={0.1} />
         <pointLight castShadow intensity={0.4} position={[1.5, 3, 3.5]} />
         <fog attach="fog" args={['#000000', 5, zOut * 4]} />
-        <CustomBox position={[0, (1.68 / 2) - 0.95, zOut * 1.32]} />
-        {optsToggler["floor"].bool && <BaseballFieldFloorScale position={[0, -2.9, 0]} floorWidth={0.1} />}
+        <CustomBox position={[0, -2.8, zOut * 1.32]} />
+        {optsToggler["floor"].bool && <BaseballFieldFloorScale position={[0, -2.82, 0]} floorWidth={0.1} />}
         {optsToggler["backwall"].bool && <CustomWall length={zOut} width={xOut / 2} roofHeight={yOut} position={[0, 0, -(zOut - (wallWidth * (1.5 / 2)))]} thickness={wallWidth} /> }
         <GirlCollection {...{optsToggler}} />
       </Canvas>
@@ -114,17 +110,12 @@ export const PovCamera = ({ sizeForm }: any) => {
 
 export const GirlCollection = ({optsToggler}:any) => {
   return (<>
-    {optsToggler["roof"].bool && <group rotation={[0, -Math.PI / 2, 0]}><GLBPart partName={"head"} scale={0.5} /></group> }
-    {optsToggler["frontwall"].bool && <group rotation={[0, -Math.PI / 2, 0]}><GLBPart partName={"body"} scale={0.5} /></group> }
-    {optsToggler["rightwall"].bool && <group rotation={[0, -Math.PI / 2, 0]}><GLBPart partName={"leftleg"} scale={0.5} /></group> }
-    {optsToggler["leftwall"].bool && <group rotation={[0, -Math.PI / 2, 0]}><GLBPart partName={"rightleg"} scale={0.5} /></group> }
-    {optsToggler["righttopwall"].bool && <group rotation={[0, -Math.PI / 2, 0]}><GLBPart partName={"leftarm"} scale={0.5} /></group> }
-    {optsToggler["lefttopwall"].bool && <group rotation={[0, -Math.PI / 2, 0]}><GLBPart partName={"rightarm"} scale={0.5} /></group> }
-    {/* {optsToggler["frontwall"].bool && <group rotation={[0, -Math.PI / 2, 0]}><GirlBody scale={0.5} /></group> }
-    {optsToggler["rightwall"].bool && <group rotation={[0, -Math.PI / 2, 0]}> <GirlLeftLeg scale={0.5} /> </group> }
-    {optsToggler["leftwall"].bool && <group rotation={[0, -Math.PI / 2, 0]}> <GirlRightLeg scale={0.5} /> </group>}
-    {optsToggler["righttopwall"].bool && <group rotation={[0, -Math.PI / 2, 0]}> <GirlLeftArm scale={0.5} /> </group> }
-    {optsToggler["lefttopwall"].bool && <group rotation={[0, -Math.PI / 2, 0]}> <GirlRightArm scale={0.5} /> </group> } */}
+    {optsToggler["roof"].bool && <group rotation={[0, -Math.PI / 2, 0]}><GLBPartReflective partName={"head"} scale={0.5} /></group> }
+    {optsToggler["frontwall"].bool && <group rotation={[0, -Math.PI / 2, 0]}><GLBPartReflective partName={"body"} scale={0.5} /></group> }
+    {optsToggler["rightwall"].bool && <group rotation={[0, -Math.PI / 2, 0]}><GLBPartReflective partName={"leftleg"} scale={0.5} /></group> }
+    {optsToggler["leftwall"].bool && <group rotation={[0, -Math.PI / 2, 0]}><GLBPartReflective partName={"rightleg"} scale={0.5} /></group> }
+    {optsToggler["righttopwall"].bool && <group rotation={[0, -Math.PI / 2, 0]}><GLBPartReflective partName={"leftarm"} scale={0.5} /></group> }
+    {optsToggler["lefttopwall"].bool && <group rotation={[0, -Math.PI / 2, 0]}><GLBPartReflective partName={"rightarm"} scale={0.5} /></group> }
 
   </>)
 }

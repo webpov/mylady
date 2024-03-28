@@ -2,6 +2,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { BufferGeometry, DoubleSide, Mesh, MeshBasicMaterial, MeshStandardMaterial } from "three";
 import * as THREE from "three";
 import { useThree } from "@react-three/fiber";
+import { RoundedBox, useTexture } from "@react-three/drei";
 
 export default function Component(
     { position=[0,0,0], points=null, thickness=0.1, roofHeight=2,
@@ -26,6 +27,7 @@ export default function Component(
     const basic_material = new MeshBasicMaterial({ color: 0xffffff, side: DoubleSide,  });
     const material = new MeshStandardMaterial({ color: 0xffffff, side: DoubleSide, roughness: 0.5 });
     const meshRef:any = useRef<Mesh>();
+  const matcapTexture = useTexture('/img/asd2.jpg');
     
     
 
@@ -59,20 +61,30 @@ export default function Component(
     }
 
     useEffect(()=>{
-        if (!!position) {
+        if (!!position && meshRef.current) {
             meshRef.current.position.set(position[0],position[1]+(roofHeight/2),position[2])
         }
         
         // meshRef.current.rotation.y = 1.68;
     },[position])
     // return <Truss1  />
-    return (
-    <mesh  castShadow receiveShadow
-        ref={meshRef} // geometry={new THREE.BufferGeometry().setFromPoints(vertices)} material={basic_material}
-    >
-        <extrudeBufferGeometry attach="geometry" args={[shape, extrudeSettings]} />
-        <meshStandardMaterial color="#ffffff" side={DoubleSide} />
+    return (<>
+    <group position={[0,-2,0]} >
+        <RoundedBox position={position}  args={[width*4.05,2.5,.26]} receiveShadow>
+            <meshStandardMaterial color="#ffffff" />
+        </RoundedBox>
+    </group>
+    <group position={[0,1.25,0]} >
+        <mesh  castShadow receiveShadow 
+            ref={meshRef} // geometry={new THREE.BufferGeometry().setFromPoints(vertices)} material={basic_material}
+        >
+            <extrudeBufferGeometry attach="geometry" args={[shape, extrudeSettings]} />
+            <meshStandardMaterial color="#ffffff" side={DoubleSide} />
 
-    </mesh>    
-    )
+        </mesh>    
+    </group>
+    </>)
 };
+
+
+            {/* <meshMatcapMaterial transparent opacity={0.75} matcap={matcapTexture} /> */}

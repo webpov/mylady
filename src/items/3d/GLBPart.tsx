@@ -13,8 +13,12 @@ export default function GLBPart({partName}:any) {
   useEffect(() => {
     scene.traverse((o) => {
       if (o instanceof THREE.Mesh) {
-        o.material = new THREE.MeshMatcapMaterial({
-          matcap: matcapTexture,
+        // o.material = new THREE.MeshMatcapMaterial({
+        //   matcap: matcapTexture,
+        //   color: "#dd9900",
+        // });
+        o.material = new THREE.MeshStandardMaterial({
+          // matcap: matcapTexture,
           color: "#dd9900",
         });
         o.receiveShadow = true;
@@ -23,7 +27,8 @@ export default function GLBPart({partName}:any) {
     });
   }, [matcapTexture, scene, selIndex]);
 
-  const handleClick = () => {
+  const handleClick = (e:any) => {
+    e.stopPropagation()
     const newIndex = (selIndex + 1) % 6; // Cycle from 0 to 5
     setSelIndex(newIndex);
 

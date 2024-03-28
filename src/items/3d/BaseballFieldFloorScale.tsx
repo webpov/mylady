@@ -1,4 +1,4 @@
-import { SpotLight, useDepthBuffer } from "@react-three/drei";
+import { Circle, SpotLight, useDepthBuffer } from "@react-three/drei";
 import { useFrame, useThree } from "@react-three/fiber";
 import { useRef, useState } from "react";
 import { Mesh } from "three";
@@ -24,24 +24,16 @@ export default function Component ({ position=[0,0,0] , floorWidth=0.1}: BoxProp
     });
   
     return (
-    <group>
+    <group position={position}>
 
-        <mesh
-            castShadow receiveShadow
-            position={position}
-            ref={meshRef}
-            // scale={clicked ? 2 : 1}
-            onClick={() => setClicked(!clicked)}
-            onPointerOver={() => setHovered(true)}
-            onPointerOut={() => setHovered(false)}
-        >
-            {/* <MovingSpot depthBuffer={depthBuffer} color="#ffffff" position={[0,0,0]} /> */}
+<Circle rotation={[-Math.PI/2,0,0]} args={[12,32]} receiveShadow>
+<meshStandardMaterial  color={"#ffffff"} side={0}  />
 
-            <cylinderGeometry args={[12, 12, floorWidth, 64, 1]} />
-            {/* <boxGeometry args={[50, floorWidth, 110]} /> */}
-            {/* <meshStandardMaterial opacity={0.25} transparent color={"white"} /> */}
-            <meshStandardMaterial  color={"#ffffff"} />
-        </mesh>
+</Circle>
+<Circle rotation={[Math.PI/2,0,0]} args={[12,32]} receiveShadow>
+<meshStandardMaterial  color={"#ffffff"} side={0}  transparent opacity={0.5} />
+
+</Circle>
       </group>
     );
 };
