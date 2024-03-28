@@ -1110,3 +1110,14 @@ body { font-family: "Inter"; }
 .tx-altfont-3 { font-family: 'Gajraj One', cursive !important}
 .tx-altfont-4 {     font-family: 'Marko One', serif !important}
 .tx-altfont-5 {     font-family: 'Lobster', serif !important}
+
+.gbg-glass {
+	&:after {
+		content: '';
+		position: absolute;
+		inset: 0;
+		backdrop-filter: blur(20px);
+		-webkit-mask: linear-gradient(180deg, black 0%, transparent 30%, transparent 70%, black 100%);
+		mask: linear-gradient(180deg, black 0%, transparent 30%, transparent 70%, black 100%);
+	  }
+  }

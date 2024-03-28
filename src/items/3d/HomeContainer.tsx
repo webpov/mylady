@@ -1,14 +1,18 @@
-import { Canvas, useThree } from "@react-three/fiber";
+import { Canvas, extend, useThree } from "@react-three/fiber";
 import CustomWall from "@/items/3d/CustomWall";
 import { forwardRef, useEffect, useImperativeHandle, useMemo, useState, } from 'react'
 import CustomBox from "./CustomBox";
-import { OrbitControls } from "@react-three/drei";
+import { OrbitControls, Sparkles, Sphere, Stars, useTexture } from "@react-three/drei";
 import BaseballFieldFloorScale from "./BaseballFieldFloorScale";
 import GLBPartReflective from "./GLBPartReflective";
 import GLBPart from "./GLBPart";
 import { LeftSideButtons } from "./LeftSideButtons";
 import { SliderInputGroup } from "./SliderInputGroup";
+import { useSearchParams } from "next/navigation";
+import { EffectComposer, Bloom } from '@react-three/postprocessing'
+import { UnrealBloomPass } from 'three-stdlib'
 
+extend({ UnrealBloomPass })
 
 const Component = forwardRef(({ }: any, ref) => {
   useImperativeHandle(ref, () => ({
@@ -68,20 +72,40 @@ const Component = forwardRef(({ }: any, ref) => {
     let theNewSize = { ...sizeForm, ...{ [propName]: e } }
     s__sizeForm(theNewSize)
   }
+  const searchParams = useSearchParams()
 
-  return (
+    const bloom = searchParams.has("hd")
+    return (
     <div className='h-min-500px w-100 flex-col g-b-20 bord-r- flex-align-stretch flex-justify-stretch pos-rel'>
       <SliderInputGroup {...{ be_size, sizeForm }} />
       <LeftSideButtons {...{toggleOption, optsToggler, zOut, xOut, }} />
-      <Canvas shadows camera={{ fov: sizeForm.fov, position: [-2, -2, 8], }} >
+      <Canvas
+          // gl={{ preserveDrawingBuffer: true }}
+          shadows camera={{ fov: sizeForm.fov, position: [-2, -2, 8], }} 
+          >
+{/*           
+      <EffectComposer multisampling={4}>
+              <Bloom kernelSize={1} luminanceThreshold={0} luminanceSmoothing={0} intensity={1.5} />
+            </EffectComposer> */}
+{/*             
+      <Bloom
+    intensity={1.0} // The bloom intensity.
+    blurPass={undefined} // A blur pass.
+    luminanceThreshold={0.9} // luminance threshold. Raise this value to mask out darker elements in the scene.
+    luminanceSmoothing={0.025} // smoothness of the luminance threshold. Range is [0, 1]
+    mipmapBlur={false} // Enables or disables mipmap blur.
+  /> */}
         <PovCamera  {...{ sizeForm }} />
         <ambientLight intensity={0.1} />
         <pointLight castShadow intensity={0.4} position={[1.5, 3, 3.5]} />
-        <fog attach="fog" args={['#000000', 5, zOut * 4]} />
+        {/* <fog attach="fog" args={['#000000', 5, zOut * 4]} /> */}
         <CustomBox position={[0, -2.8, zOut * 1.32]} />
         {optsToggler["floor"].bool && <BaseballFieldFloorScale position={[0, -2.82, 0]} floorWidth={0.1} />}
         {optsToggler["backwall"].bool && <CustomWall length={zOut} width={xOut / 2} roofHeight={yOut} position={[0, 0, -(zOut - (wallWidth * (1.5 / 2)))]} thickness={wallWidth} /> }
-        <GirlCollection {...{optsToggler}} />
+        <group>
+          <group position={[0,0,0]}><GirlCollection {...{optsToggler}} /></group>
+          {/* <group position={[-3,0,-1]}><GirlCollection {...{optsToggler}} /></group> */}
+        </group>
       </Canvas>
     </div>)
 })
@@ -109,13 +133,28 @@ export const PovCamera = ({ sizeForm }: any) => {
 }
 
 export const GirlCollection = ({optsToggler}:any) => {
+  const deepSpace = useTexture("/img/deepspace.jpeg");
   return (<>
-    {optsToggler["roof"].bool && <group rotation={[0, -Math.PI / 2, 0]}><GLBPartReflective partName={"head"} scale={0.5} /></group> }
-    {optsToggler["frontwall"].bool && <group rotation={[0, -Math.PI / 2, 0]}><GLBPartReflective partName={"body"} scale={0.5} /></group> }
-    {optsToggler["rightwall"].bool && <group rotation={[0, -Math.PI / 2, 0]}><GLBPartReflective partName={"leftleg"} scale={0.5} /></group> }
-    {optsToggler["leftwall"].bool && <group rotation={[0, -Math.PI / 2, 0]}><GLBPartReflective partName={"rightleg"} scale={0.5} /></group> }
-    {optsToggler["righttopwall"].bool && <group rotation={[0, -Math.PI / 2, 0]}><GLBPartReflective partName={"leftarm"} scale={0.5} /></group> }
-    {optsToggler["lefttopwall"].bool && <group rotation={[0, -Math.PI / 2, 0]}><GLBPartReflective partName={"rightarm"} scale={0.5} /></group> }
+  <Stars count={200}></Stars>
+  <Sparkles position={[0,0,0]} scale={8} size={2}></Sparkles> 
+
+
+  <Sphere args={[20, 32, 32]} position={[0, 1, 0]} >
+    <meshStandardMaterial  side={1} map={deepSpace} transparent opacity={0.2} />
+  </Sphere>
+    {/* {<group position={[0,1,0]} rotation={[0, -Math.PI / 2, 0]}><GLBPartReflective partName={"head"} scale={0.5} /></group> } */}
+    {optsToggler["roof"].bool && <group rotation={[0, -Math.PI / 2, 0]}>
+      <GLBPartReflective partName={"head"} scale={0.5} /></group> }
+    {optsToggler["frontwall"].bool && <group rotation={[0, -Math.PI / 2, 0]}>
+      <GLBPartReflective partName={"body"} scale={0.5} /></group> }
+    {optsToggler["rightwall"].bool && <group rotation={[0, -Math.PI / 2, 0]}>
+      <GLBPartReflective partName={"leftleg"} scale={0.5} /></group> }
+    {optsToggler["leftwall"].bool && <group rotation={[0, -Math.PI / 2, 0]}>
+      <GLBPartReflective partName={"rightleg"} scale={0.5} /></group> }
+    {optsToggler["righttopwall"].bool && <group rotation={[0, -Math.PI / 2, 0]}>
+      <GLBPartReflective partName={"leftarm"} scale={0.5} /></group> }
+    {optsToggler["lefttopwall"].bool && <group rotation={[0, -Math.PI / 2, 0]}>
+      <GLBPartReflective partName={"rightarm"} scale={0.5} /></group> }
 
   </>)
 }

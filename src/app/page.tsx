@@ -4,7 +4,10 @@ import { GameContainer } from '@/GameContainer'
 
 export default function Home() {
   return (
-    <main className={`${styles.main} _ddr `}>
+    <main className={`${styles.main}  `}>
+      
+      <div className='gbg-glass z-100  block w-100 block pos-abs h-100 noclick nopointer'>
+</div>
       <GameContainer />
     </main>
   )

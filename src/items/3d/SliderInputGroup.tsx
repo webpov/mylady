@@ -2,9 +2,9 @@
 export const SliderInputGroup = ({ be_size, sizeForm }: any) => {
   return (<>
 
-    <div className="flex pos-abs bottom-0 right-0  bord-r- pa-2 ma-2">
-      <div className="flex-col flex-align-stretch z-700 gap-1 ">
-        <div className="flex-center gap-1 opaci-50 tx-ls-5">
+    <div className="tx-sans flex pos-abs bottom-25p  right-0 w-100px  bord-r- pa-2 ma-2">
+      <div className="flex-col flex-align-stretch tx-bold bg-w-50 bg-glass-10 bord-r-25 py-2 box-shadow-5-b px-2 z-700 gap-1 ">
+        <div className="flex-center gap-1 opaci-50 tx-ls-5 tx-center">
           SIZE (ft/in)
         </div>
         <div className="flex-col gap-1 opaci-50 tx-ls-">

@@ -28,6 +28,8 @@ export default function Component ({ position=[0,0,0] , floorWidth=0.1}: BoxProp
 
 <Circle rotation={[-Math.PI/2,0,0]} args={[12,32]} receiveShadow>
 <meshStandardMaterial  color={"#ffffff"} side={0} emissive={"#777777"} />
+{/* <meshBasicMaterial color={[2,0,0]} toneMapped={false} /> */}
+
 
 </Circle>
 <Circle rotation={[Math.PI/2,0,0]} args={[12,32]} receiveShadow>
