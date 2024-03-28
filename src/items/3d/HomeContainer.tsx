@@ -73,7 +73,7 @@ const Component = forwardRef(({ }: any, ref) => {
     <div className='h-min-500px w-100 flex-col g-b-20 bord-r- flex-align-stretch flex-justify-stretch pos-rel'>
       <SliderInputGroup {...{ be_size, sizeForm }} />
       <LeftSideButtons {...{toggleOption, optsToggler, zOut, xOut, }} />
-      <Canvas shadows camera={{ fov: sizeForm.fov, position: [0, -2, 8], }} >
+      <Canvas shadows camera={{ fov: sizeForm.fov, position: [-2, -2, 8], }} >
         <PovCamera  {...{ sizeForm }} />
         <ambientLight intensity={0.1} />
         <pointLight castShadow intensity={0.4} position={[1.5, 3, 3.5]} />
@@ -102,7 +102,7 @@ export const PovCamera = ({ sizeForm }: any) => {
     <OrbitControls
       {...config}
       autoRotate
-      autoRotateSpeed={0.1}
+      autoRotateSpeed={-0.1}
       position={[0, 0, 10]}
     />
   </>)
